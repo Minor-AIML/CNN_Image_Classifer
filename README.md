@@ -65,7 +65,7 @@ The GUI will automatically:
 
 ### Current Installation Status
 - ✅ PyTorch 2.9.0 installed
-- ⚠️ CPU-only version (see SETUP_GPU.md for GPU setup)
+-  CPU+GPU version (see SETUP_GPU.md for GPU setup)
 - ✅ All dependencies installed
 - ✅ Pre-trained model available
 
