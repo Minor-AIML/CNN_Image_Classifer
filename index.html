@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNN Image Classification Project</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="project-header">
+            <div class="header-content">
+                <h1>Image Classification using Convolutional Neural Networks (CNNs)</h1>
+                <div class="authors">
+                    <p><strong>Authors:</strong> Akshat Jain (220905090), Amartya Singh (220905250), Mrityunjaya Sharma (220905444)</p>
+                    <p><strong>Institution:</strong> Department of Computer Science and Engineering, Manipal Institute of Technology, Manipal</p>
+                    <p><strong>Supervisor:</strong> Shivaprasad G, Assistant Professor- Selection Grade</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tab-nav">
+            <button class="tab-btn active" data-tab="overview">Overview</button>
+            <button class="tab-btn" data-tab="architecture">Architecture</button>
+            <button class="tab-btn" data-tab="dataset">Dataset</button>
+            <button class="tab-btn" data-tab="training">Training</button>
+            <button class="tab-btn" data-tab="evaluation">Evaluation</button>
+        </nav>
+
+        <!-- Tab Content -->
+        <main class="tab-content">
+            <!-- Overview Tab -->
+            <section id="overview" class="tab-panel active">
+                <div class="overview-grid">
+                    <div class="card">
+                        <div class="card__body">
+                            <h2>Project Abstract</h2>
+                            <p>This project implements a VGG-inspired Convolutional Neural Network for image classification on the CIFAR-10 dataset. CNNs excel at image recognition tasks due to their ability to learn hierarchical features through convolutional layers, pooling operations, and spatial relationships.</p>
+                            
+                            <h3>Key Advantages of CNNs:</h3>
+                            <ul class="advantages-list">
+                                <li><strong>Translation Invariance:</strong> Can recognize objects regardless of their position in the image</li>
+                                <li><strong>Feature Hierarchy:</strong> Learn low-level features (edges) to high-level features (objects)</li>
+                                <li><strong>Parameter Sharing:</strong> Efficient use of parameters through shared weights</li>
+                                <li><strong>Local Connectivity:</strong> Focus on local patterns while maintaining spatial relationships</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card__body">
+                            <h2>Methodology Overview</h2>
+                            <div class="methodology-steps">
+                                <div class="step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <h4>Data Preprocessing</h4>
+                                        <p>CIFAR-10 images normalized and augmented with rotation, flipping, and color jittering</p>
+                                    </div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <h4>VGG-Inspired Architecture</h4>
+                                        <p>5 convolutional blocks with increasing filter sizes (64→128→256→512→512)</p>
+                                    </div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-number">3</div>
+                                    <div class="step-content">
+                                        <h4>Training &amp; Optimization</h4>
+                                        <p>Adam optimizer with learning rate scheduling and early stopping</p>
+                                    </div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-number">4</div>
+                                    <div class="step-content">
+                                        <h4>Evaluation</h4>
+                                        <p>Comprehensive metrics including accuracy, precision, recall, and confusion matrix</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Architecture Tab -->
+            <section id="architecture" class="tab-panel">
+                <div class="architecture-container">
+                    <h2>VGG-Inspired CNN Architecture</h2>
+                    <div class="architecture-diagram">
+                        <div class="layer input-layer" data-tooltip="Input: 32×32×3 RGB images from CIFAR-10 dataset">
+                            <div class="layer-label">Input</div>
+                            <div class="layer-size">32×32×3</div>
+                        </div>
+                        
+                        <div class="arrow">→</div>
+                        
+                        <div class="conv-block" data-tooltip="Block 1: 2 Conv layers (64 filters) + BatchNorm + ReLU + MaxPool">
+                            <div class="block-label">Conv Block 1</div>
+                            <div class="block-details">64 filters<br>2 layers<br>16×16×64</div>
+                        </div>
+                        
+                        <div class="arrow">→</div>
+                        
+                        <div class="conv-block" data-tooltip="Block 2: 2 Conv layers (128 filters) + BatchNorm + ReLU + MaxPool">
+                            <div class="block-label">Conv Block 2</div>
+                            <div class="block-details">128 filters<br>2 layers<br>8×8×128</div>
+                        </div>
+                        
+                        <div class="arrow">→</div>
+                        
+                        <div class="conv-block" data-tooltip="Block 3: 3 Conv layers (256 filters) + BatchNorm + ReLU + MaxPool">
+                            <div class="block-label">Conv Block 3</div>
+                            <div class="block-details">256 filters<br>3 layers<br>4×4×256</div>
+                        </div>
+                        
+                        <div class="arrow">→</div>
+                        
+                        <div class="conv-block" data-tooltip="Block 4: 3 Conv layers (512 filters) + BatchNorm + ReLU + MaxPool">
+                            <div class="block-label">Conv Block 4</div>
+                            <div class="block-details">512 filters<br>3 layers<br>2×2×512</div>
+                        </div>
+                        
+                        <div class="arrow">→</div>
+                        
+                        <div class="conv-block" data-tooltip="Block 5: 3 Conv layers (512 filters) + BatchNorm + ReLU + MaxPool">
+                            <div class="block-label">Conv Block 5</div>
+                            <div class="block-details">512 filters<br>3 layers<br>1×1×512</div>
+                        </div>
+                        
+                        <div class="arrow">→</div>
+                        
+                        <div class="classifier" data-tooltip="Fully connected classifier: 4096 → 4096 → 10 classes">
+                            <div class="classifier-label">Classifier</div>
+                            <div class="classifier-details">FC: 4096<br>FC: 4096<br>FC: 10</div>
+                        </div>
+                    </div>
+                    
+                    <div class="architecture-details">
+                        <div class="card">
+                            <div class="card__body">
+                                <h3>Key Components</h3>
+                                <div class="component-list">
+                                    <div class="component">
+                                        <strong>Convolutional Layers:</strong> Extract spatial features using learnable filters
+                                    </div>
+                                    <div class="component">
+                                        <strong>Batch Normalization:</strong> Normalize inputs to improve training stability
+                                    </div>
+                                    <div class="component">
+                                        <strong>ReLU Activation:</strong> Non-linear activation function for feature mapping
+                                    </div>
+                                    <div class="component">
+                                        <strong>Max Pooling:</strong> Reduce spatial dimensions while retaining important features
+                                    </div>
+                                    <div class="component">
+                                        <strong>Dropout:</strong> Regularization technique to prevent overfitting
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dataset Tab -->
+            <section id="dataset" class="tab-panel">
+                <div class="dataset-container">
+                    <h2>CIFAR-10 Dataset</h2>
+                    <div class="dataset-overview">
+                        <div class="card">
+                            <div class="card__body">
+                                <h3>Dataset Statistics</h3>
+                                <div class="stats-grid">
+                                    <div class="stat">
+                                        <div class="stat-value">50,000</div>
+                                        <div class="stat-label">Training Images</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value">10,000</div>
+                                        <div class="stat-label">Test Images</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value">10</div>
+                                        <div class="stat-label">Classes</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="stat-value">32×32</div>
+                                        <div class="stat-label">Image Size</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="classes-grid">
+                        <h3>CIFAR-10 Classes</h3>
+                        <div class="class-samples">
+                            <div class="class-item" data-class="airplane">
+                                <div class="class-icon">✈️</div>
+                                <div class="class-name">Airplane</div>
+                            </div>
+                            <div class="class-item" data-class="automobile">
+                                <div class="class-icon">🚗</div>
+                                <div class="class-name">Automobile</div>
+                            </div>
+                            <div class="class-item" data-class="bird">
+                                <div class="class-icon">🐦</div>
+                                <div class="class-name">Bird</div>
+                            </div>
+                            <div class="class-item" data-class="cat">
+                                <div class="class-icon">🐱</div>
+                                <div class="class-name">Cat</div>
+                            </div>
+                            <div class="class-item" data-class="deer">
+                                <div class="class-icon">🦌</div>
+                                <div class="class-name">Deer</div>
+                            </div>
+                            <div class="class-item" data-class="dog">
+                                <div class="class-icon">🐶</div>
+                                <div class="class-name">Dog</div>
+                            </div>
+                            <div class="class-item" data-class="frog">
+                                <div class="class-icon">🐸</div>
+                                <div class="class-name">Frog</div>
+                            </div>
+                            <div class="class-item" data-class="horse">
+                                <div class="class-icon">🐴</div>
+                                <div class="class-name">Horse</div>
+                            </div>
+                            <div class="class-item" data-class="ship">
+                                <div class="class-icon">🚢</div>
+                                <div class="class-name">Ship</div>
+                            </div>
+                            <div class="class-item" data-class="truck">
+                                <div class="class-icon">🚛</div>
+                                <div class="class-name">Truck</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="augmentation-section">
+                        <h3>Data Augmentation Techniques</h3>
+                        <div class="augmentation-grid">
+                            <div class="aug-item">
+                                <h4>Random Horizontal Flip</h4>
+                                <p>Randomly flips images horizontally to increase data diversity</p>
+                            </div>
+                            <div class="aug-item">
+                                <h4>Random Rotation (±10°)</h4>
+                                <p>Small rotations to make model rotation-invariant</p>
+                            </div>
+                            <div class="aug-item">
+                                <h4>Random Crop with Padding</h4>
+                                <p>Random cropping after padding to maintain spatial relationships</p>
+                            </div>
+                            <div class="aug-item">
+                                <h4>Color Jitter</h4>
+                                <p>Random changes in brightness, contrast, and saturation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Training Tab -->
+            <section id="training" class="tab-panel">
+                <div class="training-container">
+                    <h2>Training Process</h2>
+                    
+                    <div class="training-params">
+                        <div class="card">
+                            <div class="card__body">
+                                <h3>Training Parameters</h3>
+                                <div class="params-grid">
+                                    <div class="param">
+                                        <strong>Optimizer:</strong> Adam
+                                    </div>
+                                    <div class="param">
+                                        <strong>Learning Rate:</strong> 0.001
+                                    </div>
+                                    <div class="param">
+                                        <strong>Batch Size:</strong> 128
+                                    </div>
+                                    <div class="param">
+                                        <strong>Max Epochs:</strong> 50
+                                    </div>
+                                    <div class="param">
+                                        <strong>Weight Decay:</strong> 1e-4
+                                    </div>
+                                    <div class="param">
+                                        <strong>Scheduler:</strong> ReduceLROnPlateau
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="charts-container">
+                        <div class="chart-card">
+                            <h3>Training &amp; Validation Loss</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="lossChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-card">
+                            <h3>Training &amp; Validation Accuracy</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="accuracyChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="training-summary">
+                        <div class="card">
+                            <div class="card__body">
+                                <h3>Training Results</h3>
+                                <div class="results-grid">
+                                    <div class="result">
+                                        <div class="result-value">35</div>
+                                        <div class="result-label">Epochs Trained</div>
+                                    </div>
+                                    <div class="result">
+                                        <div class="result-value">89.9%</div>
+                                        <div class="result-label">Best Val Accuracy</div>
+                                    </div>
+                                    <div class="result">
+                                        <div class="result-value">0.38</div>
+                                        <div class="result-label">Final Val Loss</div>
+                                    </div>
+                                    <div class="result">
+                                        <div class="result-value">Early Stopping</div>
+                                        <div class="result-label">Termination</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Evaluation Tab -->
+            <section id="evaluation" class="tab-panel">
+                <div class="evaluation-container">
+                    <h2>Model Evaluation</h2>
+                    
+                    <div class="performance-summary">
+                        <div class="card">
+                            <div class="card__body">
+                                <h3>Overall Performance</h3>
+                                <div class="metrics-grid">
+                                    <div class="metric">
+                                        <div class="metric-value">87.45%</div>
+                                        <div class="metric-label">Test Accuracy</div>
+                                    </div>
+                                    <div class="metric">
+                                        <div class="metric-value">87.23%</div>
+                                        <div class="metric-label">Precision</div>
+                                    </div>
+                                    <div class="metric">
+                                        <div class="metric-value">87.45%</div>
+                                        <div class="metric-label">Recall</div>
+                                    </div>
+                                    <div class="metric">
+                                        <div class="metric-value">87.34%</div>
+                                        <div class="metric-label">F1-Score</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="evaluation-charts">
+                        <div class="confusion-matrix-container">
+                            <h3>Confusion Matrix</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="confusionMatrix"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="per-class-metrics">
+                            <h3>Per-Class Performance</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="perClassChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detailed-metrics">
+                        <h3>Detailed Class Metrics</h3>
+                        <div class="metrics-table">
+                            <div class="table-header">
+                                <div>Class</div>
+                                <div>Precision</div>
+                                <div>Recall</div>
+                                <div>F1-Score</div>
+                                <div>Support</div>
+                            </div>
+                            <div id="metricsTableBody"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Tooltip -->
+    <div id="tooltip" class="tooltip"></div>
+    
+    <script src="app.js"></script>
+</body>
+</html>

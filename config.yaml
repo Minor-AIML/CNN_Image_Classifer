@@ -1,0 +1,79 @@
+# CNN Image Classification Configuration
+
+# Model Configuration
+model:
+  name: "VGGNet"
+  num_classes: 10
+  dropout: 0.5
+  architecture:
+    blocks: [64, 128, 256, 512, 512]
+    conv_layers_per_block: [2, 2, 3, 3, 3]
+    use_batch_norm: true
+    use_adaptive_pool: true
+
+# Training Configuration  
+training:
+  batch_size: 128
+  epochs: 50
+  learning_rate: 0.001
+  weight_decay: 1e-4
+  optimizer: "Adam"
+  scheduler:
+    type: "ReduceLROnPlateau"
+    factor: 0.5
+    patience: 5
+  early_stopping:
+    patience: 10
+    min_delta: 0.001
+
+# Data Configuration
+data:
+  dataset: "CIFAR10"
+  validation_split: 0.1
+  num_workers: 4
+  pin_memory: true
+
+  # Data Augmentation
+  augmentation:
+    horizontal_flip: 0.5
+    rotation: 10
+    crop_padding: 4
+    color_jitter:
+      brightness: 0.2
+      contrast: 0.2
+      saturation: 0.2
+      hue: 0.1
+
+  # Normalization (ImageNet stats)
+  normalization:
+    mean: [0.485, 0.456, 0.406]
+    std: [0.229, 0.224, 0.225]
+
+# Paths
+paths:
+  data_dir: "./data"
+  model_dir: "./models"
+  plots_dir: "./plots"
+  results_dir: "./results"
+  logs_dir: "./logs"
+
+# Evaluation Configuration
+evaluation:
+  metrics: ["accuracy", "precision", "recall", "f1_score"]
+  confusion_matrix: true
+  per_class_analysis: true
+  misclassification_analysis: true
+  confidence_analysis: true
+  top_k_accuracy: [1, 3, 5]
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "training.log"
+
+# Experiment Tracking
+experiment:
+  name: "cifar10_vgg_baseline"
+  tags: ["vgg", "cifar10", "baseline"]
+  notes: "VGG-inspired CNN for CIFAR-10 classification"
